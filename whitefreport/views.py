@@ -11,12 +11,6 @@ import datetime
 import pytz
 from django.http import HttpResponse
 from django.contrib import messages
-from google.oauth2 import service_account
-
-# credentials = service_account.Credentials.from_service_account_file('./whitef-data-b8eff.json')
-
-# scoped_credentials = credentials.with_scopes(
-#     ['https://www.googleapis.com/auth/cloud-platform'])
 
 config = { 
     "apiKey": "AIzaSyCvY5jMuYXAwUviHG_MgZVdObauFMCx08I",
@@ -29,11 +23,9 @@ config = {
     "appId": "1:125886529819:web:53f13806b2596b227413be"
 }
 
-
 firebase = pyrebase.initialize_app(config)
 authe = firebase.auth()
 database = firebase.database()
-# auth = firebase.auth()
 storage = firebase.storage()
 
 
@@ -69,7 +61,7 @@ def postsign(request):
         return render(request, 'whitefreport/welcome.html', {'e':name})
                
     except:
-        message=("Invalid credentials, or no internet connection")
+        message=("Invalid credentials")
         return render(request, 'whitefreport/signin.html', {'messg':message})
       
 def logout(request):
@@ -112,14 +104,14 @@ def create(request):
 def post_create(request):
     tz = pytz.timezone('Europe/London')
     time_now = datetime.datetime.now(timezone.utc).astimezone(tz)
-    millis = int(time.mktime(time_now.timetuple()))
+    epoch = datetime.datetime(1970,1,1, tzinfo=pytz.utc)
+    millis = int((time_now - epoch).total_seconds())
     print("mili"+str(millis)) 
     make = request.POST.get('make')
     task = request.POST.get('task')
     work = request.POST.get('work')
     progress = request.POST.get('progress')
     url = request.POST.get('url')
-  
     try:
         idtoken = request.session["uid"]
         a = authe.get_account_info(idtoken)
@@ -135,14 +127,13 @@ def post_create(request):
             "url": url
             }
             
-        database.child('users').child(a).child('reports').child(millis).set(data)
+        database.child('users').child(a).child('reports').child(str(millis)).set(data)
         messages.success(request, "Report successfully submited! ")
         name = database.child('users').child(a).child('details').child('name').get().val()
         return render(request,"whitefreport/welcome.html",{'e':name})
     except KeyError:
         message=("Oooops! User logged out Please Sign in again")
         return render(request, 'whitefreport/signin.html', {'messg':message})
-   
 
 def check(request):
     if request.method == 'GET' and 'csrfmiddlewaretoken' in request.GET:
@@ -152,36 +143,11 @@ def check(request):
         print(search)
         print(uid)
         return HttpResponse("got it")
-        # timestamps = database.child('users').child(uid).child('reports').shallow().get().val()
-
-        # work_id=[]
-        # for i in timestamps:
-        #     wor = database.child('users').child(uid).child('reports').child(i).child('work').get().val()
-        #     wor = str(wor)+"$"+str(i)
-        #     work_id.append(wor)
-        #     matching = [str(string) for string in work_id if search in string.lower()]
-        #     s_work=[]
-        #     s_id=[]
-                
-        # for i in matching:
-        #     work, ids = i.split('$')
-        #     s_work.append(work)
-        #     s_id.append(ids)
-        #     date = []
-        # for i in s_id:
-        #     i = float(i)
-        #     dat = datetime.datetime.fromtimestamp(i).strftime('%a %d %B %y / %H:%M')
-        #     date.append(dat)
-        # comb_lis = zip(s_id, date, s_work)
-        # name = database.child('users').child(uid).child('details').child('name').get().val()
-        # return render(request, 'whitefreport/check.html', {'comb_lis': comb_lis, 'e': name, 'uid': uid})
         
     else:
         idtoken = request.session['uid']
         a = authe.get_account_info(idtoken)
-        a = a['users']
-        a = a[0]
-        a = a['localId']
+        a = a['users'][0]['localId']
     
         timestamps = database.child('users').child(a).child('reports').shallow().get().val()
         
@@ -212,7 +178,7 @@ def check(request):
             
         date = []
         for i in lis_time:
-            i = float(i)
+            i = float(i) 
             dat = datetime.datetime.fromtimestamp(i).strftime('%a %d %b %y / %H:%M')
             date.append(dat)
         # print(date)
@@ -251,5 +217,3 @@ def post_check(request):
     name = database.child('users').child(a).child('details').child('name').get().val()
     return render(request,"whitefreport/post_check.html",{'hr':make, 't':task,'w':work,'p':progress, 'd':dat, 'e':name, 'i':img_url, 'm':item_id, 'uid':a})
 
-# people = database.child('users').child('reports').child('work').get().val()
-# print(people)
