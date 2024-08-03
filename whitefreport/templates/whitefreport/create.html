@@ -32,37 +32,39 @@
     </div>
 
     <button type="button" onclick=location.href="{% url 'check' %}" class="btn b">BACK TO THE MAIN REPORTS</button>
-    <br><br>
+    <br> <br>
+
     <div>
-        <form action="/post_create/" method="POST" style="margin-left: 0em;">
+        <form action="/post_create/" method="POST" style="margin-left:0em;">
             <div>
-                <input class="create_submit" type="submit" value="SUBMIT REPORT" title=" Submit" />
+                &nbsp; &nbsp; &nbsp; &nbsp; <input class="create_submit" type="submit" value="SUBMIT REPORT"
+                    title=" Submit" />
                 <br><br>
             </div>
             <div class="create_data">
                 {% csrf_token %}
                 <div>
-                    Name : <br>
+                    &nbsp; Name : <br>
                     <input type="text" name="task" placeholder="Type Name" required
                         style="background:rgb(223, 223, 241);color: rgb(111, 10, 243);font-size: 14px;padding:0.5em;width:91vw;"><br>
-                    Subject : <br>
+                    &nbsp; Subject : <br>
                     <input type="text" name="work" placeholder="Type Subject" required
                         style="background:rgb(223, 223, 241);color: rgb(111, 10, 243);font-size: 14px;padding:0.5em;width:91vw;"><br>
-                    Url : <br>
+                    &nbsp; Url : <br>
                     <input type="text" name="make" placeholder="Type url"
                         style="background:rgb(223, 223, 241);color: rgb(111, 10, 243);font-size: 14px;padding:0.5em;width:91vw;"><br>
                 </div>
                 <div>
-                    Description : <br>
-                    <textarea rows="6" cols="auto" name="progress" placeholder="Type the report"
-                        style="background:rgb(223, 223, 241);color: rgb(111, 10, 243);font-size: 16px;padding:0.5em;width:91vw;"></textarea>
+                    &nbsp; Description : <br>
+                    <textarea rows="6" cols="auto" name="progress" placeholder="Type description"
+                        style="background:rgb(223, 223, 241);color: rgb(111, 10, 243);font-size:16px;padding:0.5em;width:91vw;"></textarea>
                 </div>
             </div>
             <br><br>
 
             <div style="box-shadow: 1px 1px 9px 9px rgb(4, 246, 92);"><br>
-                <span style="padding:0.3em;">UPLOAD IMAGE &darr;</span>
-                <br> &nbsp; &nbsp;&nbsp; &nbsp;&nbsp; &nbsp;&nbsp; &nbsp;
+                <span style="padding:0.3em;">UPLOAD IMAGE</span>
+                <br>&nbsp; &nbsp;&nbsp; &nbsp;&nbsp; &nbsp;&nbsp; &nbsp;
                 <svg style="width:30px;" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24"
                     stroke-width="1.5" stroke="currentColor" class="size-6">
                     <path stroke-linecap="round" stroke-linejoin="round" d="M15.75 17.25 12 21m0 0-3.75-3.75M12 21V3" />
@@ -70,26 +72,24 @@
                 <br>
                 <input type="file" name="files[]" id="files"
                     style="background:rgb(223, 223, 241);color: rgb(111, 10, 243);font-size: 14px;padding:0.5em;">
-                &nbsp;&nbsp; &nbsp; &nbsp;
+                &nbsp; &nbsp; &nbsp; &nbsp;
                 <input type="hidden" name="url" id="url">
-                <input type="hidden" name2="url2" id="url2">
-
-                <br> &nbsp; &nbsp;&nbsp; &nbsp;&nbsp; &nbsp;&nbsp; &nbsp;
+                <br>&nbsp; &nbsp;&nbsp; &nbsp;&nbsp; &nbsp;&nbsp; &nbsp;
                 <svg style="width:30px;" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24"
                     stroke-width="1.5" stroke="currentColor" class="size-6">
                     <path stroke-linecap="round" stroke-linejoin="round" d="M15.75 17.25 12 21m0 0-3.75-3.75M12 21V3" />
                 </svg>
                 <br>
-                &nbsp; &nbsp; &rarr;<button type="button" onclick="uploadimage()">Attach File</button><br> &nbsp; &nbsp;
-                &nbsp; &nbsp;
+                &nbsp; &nbsp; <button type="button" onclick="uploadimage()">Attach File</button><br> &nbsp; &nbsp;
             </div><br><br>
+
 
         </form>
     </div>
 </body>
 
-<script src="https://www.gstatic.com/firebasejs/3.7.4/firebase.js"></script>
 
+<script src="https://www.gstatic.com/firebasejs/3.7.4/firebase.js"></script>
 
 <script>
 
@@ -113,7 +113,6 @@
     {
         var storage = firebase.storage();
         var file = document.getElementById("files").files[0];
-
         // var storageRef = storage.ref();
         var storageRef = firebase.storage().ref();
         var thisref = storageRef.child(file.name).put(file, metadata);
@@ -137,8 +136,6 @@
     }
 
 </script>
-
-
 
 {% endblock content %}
 
