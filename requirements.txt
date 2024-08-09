@@ -30,8 +30,6 @@ pyOpenSSL==23.1.1
 pyrsistent==0.15.5
 pyserial==3.4
 pyrebase4==4.8.0
-python-apt==2.0.1+ubuntu0.20.4.1
-python-debian==0.1.36+ubuntu1.1
 PyYAML==5.3.1
 pytz==2024.1
 requests>=2.31
@@ -41,9 +39,6 @@ six==1.14.0
 sos==4.5.6
 ssh-import-id==5.10
 Twisted==18.9.0
-ubuntu-pro-client==8001
-ufw==0.36
-unattended-upgrades==0.1
 urllib3==1.25.8
 zipp==1.0.0
 zope.interface==4.7.1
